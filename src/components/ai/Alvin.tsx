@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, BotIcon, User, X, Minimize, Maximize } from "lucide-react";
+import { Send, BotIcon, User, X, Minimize, Maximize, Sparkles, ThumbsUp, ThumbsDown } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -16,6 +17,7 @@ const Alvin = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -25,6 +27,7 @@ const Alvin = () => {
     },
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -32,6 +35,13 @@ const Alvin = () => {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  // Focus input when chat is opened
+  useEffect(() => {
+    if (isOpen && !isMinimized && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen, isMinimized]);
 
   const handleSendMessage = () => {
     if (!input.trim()) return;
@@ -46,6 +56,7 @@ const Alvin = () => {
     
     setMessages(prev => [...prev, userMessage]);
     setInput("");
+    setIsTyping(true);
 
     // Simulate AI response
     setTimeout(() => {
@@ -60,6 +71,10 @@ const Alvin = () => {
         response = "I can help you manage deadlines. Consider setting due dates for all important tasks and I'll send you reminders as they approach.";
       } else if (lowerInput.includes("priority") || lowerInput.includes("important")) {
         response = "For better productivity, try focusing on high-priority tasks first. Would you like me to suggest a task organization system?";
+      } else if (lowerInput.includes("help") || lowerInput.includes("features")) {
+        response = "Taskopia helps you manage tasks, track deadlines, and collaborate with teams. You can create tasks, set priorities, add due dates, and monitor progress. What specific feature would you like to learn more about?";
+      } else if (lowerInput.includes("analyze") || lowerInput.includes("productivity")) {
+        response = "I can analyze your task completion patterns and suggest productivity improvements. Would you like me to review your recent task history?";
       } else {
         response = "I'm here to help with your task management. You can ask me about creating tasks, setting priorities, or managing deadlines.";
       }
@@ -71,8 +86,9 @@ const Alvin = () => {
         timestamp: new Date(),
       };
       
+      setIsTyping(false);
       setMessages(prev => [...prev, aiMessage]);
-    }, 1000);
+    }, 1500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -81,13 +97,23 @@ const Alvin = () => {
     }
   };
 
+  const handleFeedback = (isPositive: boolean) => {
+    toast({
+      title: isPositive ? "Thank you for your feedback!" : "We'll improve our responses",
+      description: isPositive 
+        ? "We're glad Alvin was helpful." 
+        : "Your feedback helps us make Alvin better.",
+    });
+  };
+
   if (!isOpen) {
     return (
       <Button
-        className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg"
+        className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg flex items-center justify-center group hover:scale-105 transition-transform"
         onClick={() => setIsOpen(true)}
       >
-        <BotIcon />
+        <Sparkles className="h-5 w-5 absolute opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
+        <BotIcon className="h-6 w-6 group-hover:scale-90 transition-transform" />
       </Button>
     );
   }
@@ -95,11 +121,12 @@ const Alvin = () => {
   return (
     <Card className={`
       fixed bottom-6 right-6 
-      ${isMinimized ? 'w-64 h-12' : 'w-80 sm:w-96 h-[450px]'} 
+      ${isMinimized ? 'w-64 h-12' : 'w-80 sm:w-96 h-[450px]'}
       shadow-xl transition-all duration-200 overflow-hidden
+      border-primary/20
     `}>
       {/* Header */}
-      <div className="bg-primary text-white p-3 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-primary to-primary/90 text-white p-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <BotIcon className="h-5 w-5" />
           <span className="font-medium">Alvin</span>
@@ -163,10 +190,44 @@ const Alvin = () => {
                       `}
                     >
                       {message.content}
+                      {message.sender === "ai" && (
+                        <div className="flex items-center justify-end gap-1 mt-2">
+                          <button 
+                            onClick={() => handleFeedback(true)}
+                            className="text-gray-400 hover:text-green-500 transition-colors"
+                          >
+                            <ThumbsUp className="h-3 w-3" />
+                          </button>
+                          <button 
+                            onClick={() => handleFeedback(false)}
+                            className="text-gray-400 hover:text-red-500 transition-colors"
+                          >
+                            <ThumbsDown className="h-3 w-3" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="flex gap-2 max-w-[80%]">
+                    <div className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 bg-secondary text-primary">
+                      <BotIcon className="h-4 w-4" />
+                    </div>
+                    <div className="p-3 rounded-lg bg-gray-100 text-gray-800 rounded-tl-none">
+                      <div className="flex space-x-1">
+                        <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div ref={messagesEndRef} />
             </div>
           </CardContent>
@@ -175,13 +236,19 @@ const Alvin = () => {
           <CardFooter className="p-3 border-t">
             <div className="flex w-full gap-2">
               <Input
-                placeholder="Type a message..."
+                ref={inputRef}
+                placeholder="Ask Alvin about your tasks..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 className="flex-1"
               />
-              <Button size="icon" onClick={handleSendMessage}>
+              <Button 
+                size="icon" 
+                onClick={handleSendMessage}
+                disabled={!input.trim() || isTyping}
+                className="bg-primary hover:bg-primary/90"
+              >
                 <Send className="h-4 w-4" />
               </Button>
             </div>

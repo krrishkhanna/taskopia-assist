@@ -84,6 +84,7 @@ const Index = () => {
         onSave={handleSaveTask}
       />
       
+      {/* AI Assistants */}
       <AIAssistant suggestions={mockSuggestions} />
     </div>
   );
