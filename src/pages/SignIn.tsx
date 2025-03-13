@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckSquare, Mail, Lock, ArrowRight, Github, Google } from "lucide-react";
+import { CheckSquare, Mail, Lock, ArrowRight, Github, ExternalLink } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const SignIn = () => {
@@ -118,7 +117,7 @@ const SignIn = () => {
                 title: "Google Auth",
                 description: "Google authentication not implemented yet.",
               })}>
-                <Google className="h-4 w-4 mr-2" />
+                <ExternalLink className="h-4 w-4 mr-2" />
                 Google
               </Button>
               <Button variant="outline" className="w-full" onClick={() => toast({
