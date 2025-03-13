@@ -13,6 +13,34 @@ interface Message {
   timestamp: Date;
 }
 
+// Predefined task-related responses for the AI
+const taskResponses = [
+  "I'd recommend breaking down your project into smaller, manageable tasks.",
+  "Setting deadlines for your tasks can help with time management.",
+  "Try using the Pomodoro technique - 25 minutes of focus, then a 5-minute break.",
+  "For complex projects, consider creating a mind map to organize your thoughts.",
+  "Remember to prioritize tasks based on urgency and importance.",
+  "Taking regular breaks can actually improve your productivity.",
+  "Consider delegating some tasks if you're feeling overwhelmed.",
+  "Don't forget to celebrate your achievements, even the small ones!",
+  "Try starting your day with the most challenging task when your energy is highest.",
+  "Creating a dedicated workspace can help minimize distractions."
+];
+
+// Predefined productivity tips
+const productivityTips = [
+  "Use the 2-minute rule: If a task takes less than 2 minutes, do it immediately.",
+  "Block out specific times for checking emails rather than constantly responding.",
+  "Try time-blocking your calendar to allocate specific times for different tasks.",
+  "Consider using the Eisenhower Matrix to prioritize tasks.",
+  "Limit multitasking as it can reduce productivity by up to 40%.",
+  "Take short walks when you feel your focus waning.",
+  "Stay hydrated! Dehydration can lead to decreased cognitive performance.",
+  "Try using focus apps that block distracting websites during work periods.",
+  "Set SMART goals: Specific, Measurable, Achievable, Relevant, and Time-bound.",
+  "End each day by planning your tasks for tomorrow."
+];
+
 const Alvin = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -43,6 +71,34 @@ const Alvin = () => {
     }
   }, [isOpen, isMinimized]);
 
+  const generateResponse = (userInput: string): string => {
+    const input = userInput.toLowerCase();
+    
+    // Specific responses based on user input
+    if (input.includes("hello") || input.includes("hi")) {
+      return "Hello! How can I assist you with your tasks today?";
+    } else if (input.includes("task") && (input.includes("create") || input.includes("add"))) {
+      return "To create a new task, click the 'New Task' button on the dashboard or tasks page. Would you like me to help you organize your priorities?";
+    } else if (input.includes("deadline") || input.includes("due date")) {
+      return "I can help you manage deadlines. Consider setting due dates for all important tasks and I'll send you reminders as they approach.";
+    } else if (input.includes("priority") || input.includes("important")) {
+      return "For better productivity, try focusing on high-priority tasks first. Would you like me to suggest a task organization system?";
+    } else if (input.includes("help") || input.includes("features")) {
+      return "Taskopia helps you manage tasks, track deadlines, and collaborate with teams. You can create tasks, set priorities, add due dates, and monitor progress. What specific feature would you like to learn more about?";
+    } else if (input.includes("analyze") || input.includes("productivity")) {
+      return "I can analyze your task completion patterns and suggest productivity improvements. Would you like me to review your recent task history?";
+    } else if (input.includes("tip") || input.includes("advice")) {
+      return productivityTips[Math.floor(Math.random() * productivityTips.length)];
+    } else if (input.includes("overwhelmed") || input.includes("stressed")) {
+      return "I understand how overwhelming task management can get. Try breaking down your projects into smaller tasks and focus on one at a time. Would you like some stress management techniques?";
+    } else if (input.includes("thank")) {
+      return "You're welcome! I'm here anytime you need assistance with your tasks. Is there anything else I can help you with?";
+    } else {
+      // Default to a random task-related response
+      return taskResponses[Math.floor(Math.random() * taskResponses.length)];
+    }
+  };
+
   const handleSendMessage = () => {
     if (!input.trim()) return;
 
@@ -58,26 +114,9 @@ const Alvin = () => {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response
+    // Simulate AI response with typing effect
     setTimeout(() => {
-      let response = "";
-      const lowerInput = input.toLowerCase();
-      
-      if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
-        response = "Hello! How can I assist you with your tasks today?";
-      } else if (lowerInput.includes("task") && (lowerInput.includes("create") || lowerInput.includes("add"))) {
-        response = "To create a new task, click the 'New Task' button on the dashboard or tasks page. Would you like me to help you organize your priorities?";
-      } else if (lowerInput.includes("deadline") || lowerInput.includes("due date")) {
-        response = "I can help you manage deadlines. Consider setting due dates for all important tasks and I'll send you reminders as they approach.";
-      } else if (lowerInput.includes("priority") || lowerInput.includes("important")) {
-        response = "For better productivity, try focusing on high-priority tasks first. Would you like me to suggest a task organization system?";
-      } else if (lowerInput.includes("help") || lowerInput.includes("features")) {
-        response = "Taskopia helps you manage tasks, track deadlines, and collaborate with teams. You can create tasks, set priorities, add due dates, and monitor progress. What specific feature would you like to learn more about?";
-      } else if (lowerInput.includes("analyze") || lowerInput.includes("productivity")) {
-        response = "I can analyze your task completion patterns and suggest productivity improvements. Would you like me to review your recent task history?";
-      } else {
-        response = "I'm here to help with your task management. You can ask me about creating tasks, setting priorities, or managing deadlines.";
-      }
+      const response = generateResponse(input);
 
       const aiMessage: Message = {
         id: Date.now().toString(),
@@ -88,7 +127,7 @@ const Alvin = () => {
       
       setIsTyping(false);
       setMessages(prev => [...prev, aiMessage]);
-    }, 1500);
+    }, Math.floor(Math.random() * 1000) + 500); // Random delay between 500-1500ms for more realistic typing
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
