@@ -1,53 +1,67 @@
+# VirileTasker
 
+![VirileTasker](https://viriletasker.vercel.app/assets/logo.png)  
+_A powerful task management and productivity app_
 
+## 🚀 Live Demo
+Check out the live version here: [VirileTasker](https://viriletasker.vercel.app)
 
-**Use your preferred IDE**
+## 📖 About
+VirileTasker is a modern task management application designed to help users organize their daily tasks efficiently. It features a clean UI, real-time updates, and seamless task categorization.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. 
+## 🎯 Features
+- ✅ Task creation, updating, and deletion
+- 🔔 Smart notifications & reminders
+- 📅 Calendar integration
+- 🌙 Dark & Light mode
+- 📊 Productivity insights & analytics
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🛠️ Tech Stack
+- **Frontend**: React.js, Next.js, Tailwind CSS
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Deployment**: Vercel
 
-Follow these steps:
+## 🚀 Installation & Setup
+To run the project locally, follow these steps:
 
+### 1️⃣ Clone the Repository
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+git clone https://github.com/yourusername/viriletasker.git
+cd viriletasker
 ```
 
-**Edit a file directly in GitHub**
+### 2️⃣ Install Dependencies
+```sh
+npm install  # or yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 3️⃣ Start the Development Server
+```sh
+npm run dev  # or yarn dev
+```
+Then open `http://localhost:3000` in your browser.
 
-**Use GitHub Codespaces**
+## 📜 Environment Variables
+Create a `.env.local` file and add the following:
+```env
+NEXT_PUBLIC_API_URL=<your_api_url>
+MONGO_URI=<your_mongodb_connection_string>
+JWT_SECRET=<your_secret_key>
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📌 Contributing
+We welcome contributions! To contribute:
+1. Fork the repo
+2. Create a new branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature-name`)
+5. Open a **Pull Request** 🚀
 
-## What technologies are used for this project?
+## 📬 Contact
+- **Website**: [VirileTasker](https://viriletasker.vercel.app)
+- **Email**: [your.email@example.com](mailto:your.email@example.com)
+- **GitHub**: [@yourusername](https://github.com/yourusername)
 
-This project is built with .
+_We hope you enjoy using VirileTasker! Happy organizing!_ 🎯
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. 
