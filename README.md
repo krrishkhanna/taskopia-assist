@@ -1,6 +1,4 @@
 # VirileTasker
-
-![VirileTasker](https://viriletasker.vercel.app/assets/logo.png)  
 _A powerful task management and productivity app_
 
 ## 🚀 Live Demo
