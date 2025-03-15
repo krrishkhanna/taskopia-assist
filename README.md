@@ -60,8 +60,8 @@ We welcome contributions! To contribute:
 
 ## 📬 Contact
 - **Website**: [VirileTasker](https://viriletasker.vercel.app)
-- **Email**: [your.email@example.com](mailto:your.email@example.com)
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **Email**: [krrishkhanna08@gmail.com](mailto:your.email@example.com)
+- **GitHub**: [@krrishkhanna](https://github.com/krrishkhanna)
 
-_We hope you enjoy using VirileTasker! Happy organizing!_ 🎯
+_I hope you enjoy using VirileTasker! Happy organizing!_ 🎯
 
